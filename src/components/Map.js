@@ -5,7 +5,7 @@ import "leaflet/dist/leaflet.css";
 
 const MapComponent = ({ spots }) => {
   return (
-    <div className="w-full max-w-4xl mx-auto rounded-lg overflow-hidden shadow-lg bg-white">
+    <div className="w-full max-w-4xl mx-auto rounded-xl overflow-hidden shadow-xl bg-white">
       <MapContainer
         center={[35.0, 135.0]} // 地図の初期中心座標
         zoom={10} // 初期ズームレベル
@@ -23,9 +23,11 @@ const MapComponent = ({ spots }) => {
             if (lat && lon) {
               return (
                 <Marker key={index} position={[lat, lon]}>
-                  <Popup>
-                    <h3 className="text-lg font-semibold">{spot_name}</h3>
-                    <p className="text-sm text-gray-500">{description}</p>
+                  <Popup className="bg-white text-black rounded-lg shadow-lg p-4">
+                    <h3 className="text-lg font-semibold text-blue-600">
+                      {spot_name}
+                    </h3>
+                    <p className="text-sm text-gray-700">{description}</p>
                   </Popup>
                 </Marker>
               );
@@ -33,7 +35,9 @@ const MapComponent = ({ spots }) => {
             return null; // 座標がない場合は何も表示しない
           })
         ) : (
-          <div className="text-center text-lg">Loading spots...</div>
+          <div className="text-center text-lg text-gray-500">
+            Loading spots...
+          </div>
         )}
       </MapContainer>
     </div>
