@@ -1,4 +1,3 @@
-// src/components/Map.js
 "use client"; // クライアントコンポーネントとして指定
 
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
@@ -6,18 +5,38 @@ import "leaflet/dist/leaflet.css";
 
 const MapComponent = ({ spots }) => {
   return (
-    <MapContainer
-      center={[35.0, 135.0]}
-      zoom={10}
-      style={{ height: "500px", width: "100%" }}
-    >
-      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      {spots.map((spot, index) => (
-        <Marker key={index} position={[spot.lat, spot.lon]}>
-          <Popup>{spot.name}</Popup>
-        </Marker>
-      ))}
-    </MapContainer>
+    <div className="w-full max-w-4xl mx-auto rounded-lg overflow-hidden shadow-lg bg-white">
+      <MapContainer
+        center={[35.0, 135.0]} // 地図の初期中心座標
+        zoom={10} // 初期ズームレベル
+        style={{ height: "500px", width: "100%" }} // 地図のスタイル設定
+      >
+        {/* タイルレイヤー */}
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+        {/* 各スポットのマーカー */}
+        {spots.length > 0 ? (
+          spots.map((spot, index) => {
+            const { lat, lon, spot_name, description } = spot; // ここで座標と名前を取得
+
+            // 座標が正しい場合のみマーカーを表示
+            if (lat && lon) {
+              return (
+                <Marker key={index} position={[lat, lon]}>
+                  <Popup>
+                    <h3 className="text-lg font-semibold">{spot_name}</h3>
+                    <p className="text-sm text-gray-500">{description}</p>
+                  </Popup>
+                </Marker>
+              );
+            }
+            return null; // 座標がない場合は何も表示しない
+          })
+        ) : (
+          <div className="text-center text-lg">Loading spots...</div>
+        )}
+      </MapContainer>
+    </div>
   );
 };
 
